@@ -16,12 +16,14 @@ public class CameraController : MonoBehaviour
     public float m_OffsetHit = 0.1f;
 
     private float m_NoMovementTimer = 0.0f; 
+    private bool m_IsIdle = false; 
     private bool m_IsCameraBehind = false; 
     private Vector3 m_LastPosition; 
 
     private Vector3 m_TargetPosition; 
     private Quaternion m_TargetRotation;
     private Vector3 m_SmoothPositionVelocity; 
+    private float m_SmoothRotationVelocity; 
     public float m_SmoothTime = 0.5f; 
 
     private void Start()
@@ -38,6 +40,7 @@ public class CameraController : MonoBehaviour
         if (isMoving)
         {
             m_NoMovementTimer = 0.0f; 
+            m_IsIdle = false; 
 
             if (m_IsCameraBehind)
             {
@@ -112,5 +115,6 @@ public class CameraController : MonoBehaviour
         m_TargetRotation = Quaternion.LookRotation(m_FollowObject.position - m_TargetPosition);
 
         m_SmoothPositionVelocity = Vector3.zero;
+        m_SmoothRotationVelocity = 0f;
     }
 }

@@ -2,43 +2,43 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IRestartGameElements
+
+public interface IRestartGameElement
 {
     void RestartGame();
 }
 public class GameManager : MonoBehaviour
 {
-    static GameManager m_GameManager;   
+    static GameManager m_GameManager;
+    List<IRestartGameElement> m_RestartGameElement = new List<IRestartGameElement>();
 
-
-    public Animation m_deathUi;
-
-    public List<IRestartGameElements> m_RestartGameElements = new List<IRestartGameElements>();
-    // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
         if (m_GameManager == null)
         {
             m_GameManager = this;
             GameObject.DontDestroyOnLoad(gameObject);
         }
+        else
+            GameManager.Destroy(gameObject);
     }
+
     static public GameManager GetGameManager()
     {
         return m_GameManager;
     }
 
-    public void AddRestartGameElement(IRestartGameElements RestartGameElement)
+    public void AddRestartGameElement(IRestartGameElement RestartgameElement)
     {
-        m_RestartGameElements.Add(RestartGameElement);
+        m_RestartGameElement.Add(RestartgameElement);
     }
+
     public void RestartGame()
     {
-        foreach(IRestartGameElements l_RestartGameElement in m_RestartGameElements)
-        {
-            l_RestartGameElement.RestartGame();
-        }
+        foreach (IRestartGameElement l_Restart in m_RestartGameElement)
+            l_Restart.RestartGame();
     }
+
     public void Update()
     {
         if (Input.GetKeyDown(KeyCode.R))
@@ -46,4 +46,5 @@ public class GameManager : MonoBehaviour
             RestartGame();
         }
     }
+
 }
